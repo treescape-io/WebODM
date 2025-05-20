@@ -77,3 +77,13 @@ dependencies = [
 dev = [
     "ruff>=0.11.9",
 ]
+
+[tool.ruff]
+# In addition to the standard set of exclusions, omit all tests, plus a specific file.
+extend-exclude = ["nodeodm"]
+
+[tool.ruff.lint]
+ignore = ["E701", "E712", "E722", "E741", "F401", "F403"]
+
+[tool.pyright]
+exclude = ["nodeodm"]
