@@ -1,8 +1,4 @@
-import sys
-import time
-import logging
 import requests
-from os import path
 from enum import Enum
 from itertools import chain as iter_chain
 
@@ -15,7 +11,6 @@ from worker.celery import app
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.fields import ChoiceField, CharField, JSONField
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import serializers
@@ -24,7 +19,8 @@ from .globals import PROJECT_NAME, ION_API_URL
 from .uploader import upload_to_ion
 
 
-pluck = lambda dic, *keys: [dic[k] if k in dic else None for k in keys]
+def pluck(dic, *keys):
+    return [dic[k] if k in dic else None for k in keys]
 
 
 ###                        ###
@@ -68,7 +64,6 @@ def get_processing_assets(task_id):
     ispc = app.control.inspect()
     ion_tasks = set()
     active = set()
-    from uuid import UUID
 
     for wtask in iter_chain(*ispc.active().values(), *ispc.reserved().values()):
         args = eval(wtask["args"])
@@ -199,7 +194,6 @@ class ShareTaskView(TaskView):
             asset_type = FILE_TO_ASSET[file_name]
 
             asset_info = get_asset_info(task.id, asset_type)
-            ion_id = asset_info["id"]
             is_error = len(asset_info["error"]) > 0
             is_task = is_asset_task(asset_info)
             is_exported = asset_info["id"] is not None and not is_task

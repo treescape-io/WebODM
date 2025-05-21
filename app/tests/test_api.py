@@ -8,7 +8,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework_jwt.settings import api_settings
 
-from app import pending_actions
 from app.models import Project, Task
 from app.plugins.signals import processing_node_removed
 from app.tests.utils import catch_signal
@@ -501,7 +500,7 @@ class TestApi(BootTestCase):
     def test_token_auth(self):
         client = APIClient()
 
-        pnode = ProcessingNode.objects.create(
+        ProcessingNode.objects.create(
             hostname="localhost",
             port=999
         )

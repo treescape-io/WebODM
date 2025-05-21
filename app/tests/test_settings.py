@@ -1,5 +1,4 @@
 import os
-import time
 
 from django.core.exceptions import ValidationError
 from django.core.files import File
@@ -20,8 +19,6 @@ class TestSettings(BootTestCase):
         pass
 
     def test_settings(self):
-        c = Client()
-
         # There should always be a Setting object
         self.assertTrue(Setting.objects.count() == 1, "There's a settings object")
 

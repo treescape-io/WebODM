@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import os, sys, json
+import os
+import sys
+import json
 
 import datetime
 
@@ -416,11 +418,11 @@ if TESTING or FLUSHING:
     EXTERNAL_AUTH_ENDPOINT = 'http://0.0.0.0:5555/auth'
 
 try:
-    from .local_settings import *
+    from .local_settings import *  # noqa: F403
 except ImportError:
     pass
 
 try:
-    from .settings_override import *
+    from .settings_override import *  # noqa: F403
 except ImportError:
     pass

@@ -1,3 +1,5 @@
+import json
+
 def calc_volume(input_dem, pts=None, pts_epsg=None, geojson_polygon=None, decimals=4,
                 base_method="triangulate", custom_base_z=None):
     try:
@@ -8,7 +10,6 @@ def calc_volume(input_dem, pts=None, pts_epsg=None, geojson_polygon=None, decima
         from scipy.optimize import curve_fit
         from scipy.interpolate import griddata
         import numpy as np
-        import json
         import warnings
 
         osr.UseExceptions()
@@ -73,7 +74,8 @@ def calc_volume(input_dem, pts=None, pts_epsg=None, geojson_polygon=None, decima
                 x_grid, y_grid = np.meshgrid(np.linspace(0, w - 1, w), np.linspace(0, h - 1, h))
 
                 # Perform curve fitting
-                linear_func = lambda xy, m1, m2, b: m1 * xy[0] + m2 * xy[1] + b
+                def linear_func(xy, m1, m2, b):
+                    return m1 * xy[0] + m2 * xy[1] + b
                 params, covariance = curve_fit(linear_func, np.vstack((xs, ys)), zs)
 
                 base = linear_func((x_grid, y_grid), *params)
@@ -124,7 +126,7 @@ def read_polygon(file):
         features = [data]
 
     for feature in features:
-        if not 'geometry' in feature:
+        if 'geometry' not in feature:
             continue
 
         # Check if the feature geometry type is Polygon

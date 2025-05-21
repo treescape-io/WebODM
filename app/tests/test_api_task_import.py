@@ -1,8 +1,6 @@
 import os
 import time
 
-import io
-import requests
 from django.contrib.auth.models import User
 from guardian.shortcuts import remove_perm, assign_perm
 from rest_framework import status
@@ -271,7 +269,6 @@ class TestApiTask(BootTransactionTestCase):
             self.assertEqual(task.status, status_codes.COMPLETED)
 
             # Download task backup
-            task_uuid = task.uuid
             res = client.get("/api/projects/{}/tasks/{}/backup".format(project.id, task.id))
             self.assertEqual(res.status_code, status.HTTP_200_OK)
 
