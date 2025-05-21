@@ -2,6 +2,9 @@ name: Test Docker
 
 on:
   pull_request:
+  push:
+    branches:
+      - treescape
 
 jobs:
   docker:
